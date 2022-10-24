@@ -1,5 +1,7 @@
 # De la Terre à la Lune (et au-delà) avec NestJS
 
+L'interface Swagger est accessible via http://localhost:3000/api.
+
 Vous trouverez ici le code pour le codelab d'introduction à NestJS du DevFest Nantes 2022.
 
 ## A faire avant le codelab
