@@ -1,7 +1,8 @@
+import { DefaultEntity } from 'src/utils/default-entity';
 import { Column, Entity } from 'typeorm';
 
 @Entity({ name: 'starship' })
-export class Starship {
+export class Starship extends DefaultEntity {
   @Column()
   name: string;
 
