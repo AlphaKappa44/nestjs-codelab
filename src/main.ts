@@ -1,5 +1,5 @@
-import { VersioningType } from '@nestjs/common';
-import { NestFactory } from '@nestjs/core';
+import { ClassSerializerInterceptor, ValidationPipe, VersioningType } from '@nestjs/common';
+import { NestFactory, Reflector } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
@@ -20,7 +20,21 @@ async function bootstrap() {
 
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
-  
+
+  //------- IN & OUT
+  // Enables global behaviors on incoming DTO
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true, // Only exposed attributes will be accepted on incoming DTO
+      transform: true, // Automatically converts attributes from incoming DTO when possible
+      transformOptions: { enableImplicitConversion: true },
+    }),
+  );
+
+  // Enables global behaviors on outgoing entities
+  // For examples, @Exclude decorators will be processed
+  app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
+
   await app.listen(3000);
 }
 bootstrap();
